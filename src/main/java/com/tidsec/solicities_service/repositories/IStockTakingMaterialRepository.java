@@ -21,6 +21,13 @@ public interface IStockTakingMaterialRepository extends IGenericRepository<Stock
     @Query("UPDATE StockTakingMaterial stm SET stm.stock = stm.stock + :quantity WHERE stm.stockTaking.idStockTaking = :idStockTaking AND stm.material.idMaterial = :idMaterial")
     void updateStock(@Param("idStockTaking") Long idStockTaking, @Param("idMaterial") Long idMaterial, @Param("quantity") Double quantity);
 
+    // 2️⃣ Actualizar el stock de un material restando lo utilizado
+    @Transactional
+    @Modifying
+    @Query("UPDATE StockTakingMaterial stm SET stm.stock = stm.stock - :quantity WHERE stm.stockTaking.idStockTaking = :idStockTaking AND stm.material.idMaterial = :idMaterial")
+    void updatedStock(@Param("idStockTaking") Long idStockTaking, @Param("idMaterial") Long idMaterial, @Param("quantity") Double quantity);
+
+
     // 3️⃣ Insertar un nuevo registro si el material no existe
     @Transactional
     @Modifying

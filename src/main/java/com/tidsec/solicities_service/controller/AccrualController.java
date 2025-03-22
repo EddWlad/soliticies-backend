@@ -1,7 +1,9 @@
 package com.tidsec.solicities_service.controller;
 
 import com.tidsec.solicities_service.dtos.AccrualDTO;
+import com.tidsec.solicities_service.dtos.AccrualListDetailDTO;
 import com.tidsec.solicities_service.entities.Accrual;
+import com.tidsec.solicities_service.entities.AccrualDetail;
 import com.tidsec.solicities_service.services.IAccrualService;
 import com.tidsec.solicities_service.util.MapperUtil;
 import lombok.RequiredArgsConstructor;
@@ -41,8 +43,11 @@ public class AccrualController {
 
     // 📌 3️⃣ Crear una nueva devengación
     @PostMapping
-    public ResponseEntity<Void> save(@RequestBody AccrualDTO accrualDTO) throws Exception {
-        Accrual obj = accrualService.save(mapperUtil.map(accrualDTO, Accrual.class));
+    public ResponseEntity<Void> save(@RequestBody AccrualListDetailDTO dto) throws Exception {
+        Accrual obj1 = accrualService.save(mapperUtil.map(dto.getAccrual(), Accrual.class));
+        List<AccrualDetail> list = mapperUtil.mapList(dto.getAccrualDetails(), AccrualDetail.class);
+
+        Accrual obj = accrualService.saveTransactional(obj1, list);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(obj.getIdAccrual()).toUri();

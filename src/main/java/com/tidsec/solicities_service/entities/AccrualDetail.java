@@ -10,19 +10,19 @@ import lombok.*;
 @ToString
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Table(name= "shipping_detail")
-public class ShippingDetail {
+@Table(name= "accrual_detail")
+public class AccrualDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private Long idShippingDetail;
+    private Long idAccrualDetail;
 
     @Column(nullable = false)
     private Long idMaterial;
 
     @Column(nullable = false)
-    private Double quantityShipped;
+    private Double quantityUsed;
 
     @Column(nullable = false)
     private Integer status = 1;

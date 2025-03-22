@@ -28,9 +28,6 @@ public class Accrual {
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false)
-    private Double quantityUsed;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_stockTaking", foreignKey = @ForeignKey(name = "FK_ACCRUAL_STOCKTAKING"))
     private StockTaking stockTaking;

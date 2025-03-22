@@ -18,7 +18,6 @@ public class AccrualDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime date = LocalDateTime.now();
     private String description;
-    private Double quantityUsed;
     private StockTaking stockTaking;
     private Integer status = 1;
 }
