@@ -12,13 +12,16 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(UserProjectPK.class)
-public class UserProject {
+@IdClass(StockTakingMaterialPK.class)
+public class StockTakingMaterial {
     @Id
-    private User user;
+    private StockTaking stockTaking;
 
     @Id
-    private Project project;
+    private Material material;
+
+    @Column(nullable = false)
+    private Double stock;
 
     @Column(nullable = false)
     private Integer status = 1;

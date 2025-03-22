@@ -8,18 +8,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(UserProjectPK.class)
-public class UserProject {
+@Entity
+@IdClass(MaterialRequestDetailPK.class)
+public class MaterialRequestDetail {
     @Id
-    private User user;
+    private MaterialsRequest materialsRequest;
 
     @Id
-    private Project project;
+    private DetailRequest detailRequest;
 
-    @Column(nullable = false)
+    @Column
     private Integer status = 1;
 }

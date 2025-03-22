@@ -1,5 +1,7 @@
 package com.tidsec.solicities_service.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -30,8 +32,8 @@ public class Company {
     @Size(min = 3, max = 50)
     private String address;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_logo", foreignKey = @ForeignKey(name = "FK_COMPANY_LOGO"))
+    @OneToOne(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
     private MediaFileLogo logo;
 
     @Column(nullable = false)

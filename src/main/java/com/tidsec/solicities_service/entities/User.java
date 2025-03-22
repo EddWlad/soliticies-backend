@@ -1,6 +1,8 @@
 package com.tidsec.solicities_service.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -18,6 +20,7 @@ import java.util.List;
 @ToString
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name= "user_data")
 public class User {
     @Id
@@ -56,6 +59,10 @@ public class User {
 
     @Column(nullable = false)
     private boolean enabled;
+
+    @OneToMany(mappedBy = "residentEngineer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<MaterialsRequest> materialsRequestList;
 
     @Column(nullable = false)
     private Integer status = 1;

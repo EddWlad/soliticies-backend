@@ -1,8 +1,12 @@
 package com.tidsec.solicities_service.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -26,12 +30,16 @@ public class Material {
     @Size(min = 3, max = 300)
     private String description;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_image", foreignKey = @ForeignKey(name = "FK_COMPANY_IMAGE"))
-    private MediaFileImage image;
+    @ManyToOne
+    @JoinColumn(name = "id_unit", foreignKey = @ForeignKey(name = "FK_MATERIAL_UNIT"))
+    private MeasurementUnit measurementUnit;
 
     @Column(nullable = false)
     private Double cost;
+
+    @OneToMany(mappedBy = "material", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<MediaFileImage> mediaFileImageList;
 
     @Column(nullable = false)
     private Integer status = 1;

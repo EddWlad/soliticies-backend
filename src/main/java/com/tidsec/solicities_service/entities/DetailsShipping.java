@@ -8,18 +8,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(UserProjectPK.class)
-public class UserProject {
+@Entity
+@IdClass(DetailsShippingPK.class)
+public class DetailsShipping {
     @Id
-    private User user;
+    private Shipping shipping;
 
     @Id
-    private Project project;
+    private ShippingDetail shippingDetail;
 
-    @Column(nullable = false)
+    @Column
     private Integer status = 1;
 }
