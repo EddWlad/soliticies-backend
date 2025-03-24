@@ -3,7 +3,6 @@ package com.tidsec.solicities_service.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
 
 @Entity
 @Data
