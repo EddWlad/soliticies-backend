@@ -1,13 +1,14 @@
 package com.tidsec.solicities_service.services.impl;
 
 
-import com.tidsec.solicities_service.entities.DetailRequest;
+import com.tidsec.solicities_service.dtos.DetailRequestDTO;
+import com.tidsec.solicities_service.dtos.MaterialRequestListDetailDTO;
+import com.tidsec.solicities_service.dtos.MaterialsRequestDTO;
+import com.tidsec.solicities_service.entities.*;
 
-import com.tidsec.solicities_service.entities.MaterialsRequest;
-import com.tidsec.solicities_service.entities.Project;
-import com.tidsec.solicities_service.entities.User;
 import com.tidsec.solicities_service.repositories.*;
 import com.tidsec.solicities_service.services.IMaterialsRequestService;
+import com.tidsec.solicities_service.util.MapperUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class MaterialsRequestServiceImpl extends GenericServiceImpl<MaterialsReq
     private final IUserRepository userRepository;
     private final IProjectRepository projectRepository;
     private final IMaterialRequestDetailRepository mdRepo;
+    private final MapperUtil mapperUtil;
 
 
     @Override
@@ -53,5 +55,41 @@ public class MaterialsRequestServiceImpl extends GenericServiceImpl<MaterialsReq
         }
 
         return materialsRequest;
+    }
+
+    @Override
+    public List<MaterialRequestListDetailDTO> findAllWithDetails() throws Exception {
+        List<MaterialsRequest> allRequests = materialsRequestRepository.findAll();
+
+        return allRequests.stream().map(req -> {
+            // Trae los registros de la tabla intermedia
+            List<MaterialRequestDetail> links = mdRepo.findDetailsByRequestIdNative(req.getIdMaterialsRequest());
+
+            // Extrae los DetailRequest
+            List<DetailRequest> details = links.stream()
+                    .map(MaterialRequestDetail::getDetailRequest)
+                    .toList();
+
+            return new MaterialRequestListDetailDTO(
+                    mapperUtil.map(req, MaterialsRequestDTO.class),
+                    mapperUtil.mapList(details, DetailRequestDTO.class)
+            );
+        }).toList();
+    }
+
+    @Override
+    public MaterialRequestListDetailDTO findByIdWithDetails(Long id) throws Exception {
+        MaterialsRequest req = materialsRequestRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No existe la solicitud con ID: " + id));
+
+        List<MaterialRequestDetail> links = mdRepo.findDetailsByRequestIdNative(id);
+        List<DetailRequest> details = links.stream()
+                .map(MaterialRequestDetail::getDetailRequest)
+                .toList();
+
+        return new MaterialRequestListDetailDTO(
+                mapperUtil.map(req, MaterialsRequestDTO.class),
+                mapperUtil.mapList(details, DetailRequestDTO.class)
+        );
     }
 }

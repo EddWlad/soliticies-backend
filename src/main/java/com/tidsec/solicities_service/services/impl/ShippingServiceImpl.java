@@ -47,10 +47,8 @@ public class ShippingServiceImpl extends GenericServiceImpl<Shipping, Long> impl
             StockTakingMaterial existingStock = stockTakingMaterialRepository.findByStockTakingAndMaterial(stockTaking.getIdStockTaking(), detail.getIdMaterial());
 
             if (existingStock != null) {
-                // 6️⃣ Si el material existe, actualizar el stock sumando quantityShipped
                 stockTakingMaterialRepository.updateStock(stockTaking.getIdStockTaking(), detail.getIdMaterial(), detail.getQuantityShipped());
             } else {
-                // 7️⃣ Si el material no existe, agregarlo con stock inicial igual a quantityShipped
                 stockTakingMaterialRepository.insertStock(stockTaking.getIdStockTaking(), detail.getIdMaterial(), detail.getQuantityShipped());
             }
         }
