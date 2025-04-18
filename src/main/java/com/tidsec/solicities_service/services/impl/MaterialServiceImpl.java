@@ -22,21 +22,4 @@ public class MaterialServiceImpl extends GenericServiceImpl<Material, Long> impl
         return materialRepository;
     }
 
-    @Override
-    @Transactional
-    public Material saveMaterialWithImages(Material material) throws Exception {
-        if (material == null) {
-            throw new IllegalArgumentException("Material cannot be null");
-        }
-
-        Material savedMaterial = materialRepository.save(material);
-
-        if (material.getMediaFileImageList() != null && !material.getMediaFileImageList().isEmpty()) {
-            for (MediaFileImage image : material.getMediaFileImageList()) {
-                image.setMaterial(savedMaterial);
-                mediaFileImageRepository.save(image);
-            }
-        }
-        return savedMaterial;
-    }
 }

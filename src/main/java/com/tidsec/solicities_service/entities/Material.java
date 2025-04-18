@@ -37,9 +37,7 @@ public class Material {
     @Column(nullable = false)
     private Double cost;
 
-    @OneToMany(mappedBy = "material", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<MediaFileImage> mediaFileImageList;
+    private List<String> images;
 
     @Column(nullable = false)
     private Integer status = 1;

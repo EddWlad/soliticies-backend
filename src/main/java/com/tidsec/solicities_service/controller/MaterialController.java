@@ -45,24 +45,10 @@ public class MaterialController {
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody MaterialDTO materialDTO) throws Exception {
 
-        Material material = mapperUtil.map(materialDTO, Material.class);
-
-        //!=
-        if (materialDTO.getImages() == null && !materialDTO.getImages().isEmpty()) {
-            List<MediaFileImage> images = materialDTO.getImages().stream().map(imageDTO -> {
-                MediaFileImage image = mapperUtil.map(imageDTO, MediaFileImage.class);
-                image.setContent(Base64.getDecoder().decode(imageDTO.getContent()));
-                image.setMaterial(material);
-                return image;
-            }).collect(Collectors.toList());
-
-            material.setMediaFileImageList(images);
-        }
-
-        Material savedMaterial = materialService.saveMaterialWithImages(material);
+        Material obj = materialService.save(mapperUtil.map(materialDTO, Material.class));
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(savedMaterial.getIdMaterial()).toUri();
+                .path("/{id}").buildAndExpand(obj.getIdMaterial()).toUri();
 
         return ResponseEntity.created(location).build();
     }

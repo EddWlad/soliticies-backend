@@ -32,9 +32,7 @@ public class Company {
     @Size(min = 3, max = 50)
     private String address;
 
-    @OneToOne(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnore
-    private MediaFileLogo logo;
+    private String logo;
 
     @Column(nullable = false)
     private Integer status = 1;

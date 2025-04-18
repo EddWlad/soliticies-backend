@@ -14,6 +14,6 @@ public class CompanyDTO {
     private String ruc;
     private String name;
     private String address;
-    private MediaFileLogo logo;
+    private String logo;
     private Integer status = 1;
 }

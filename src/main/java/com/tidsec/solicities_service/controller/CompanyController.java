@@ -45,21 +45,10 @@ public class CompanyController {
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody CompanyDTO companyDTO) throws Exception  {
 
-        Company company = mapperUtil.map(companyDTO, Company.class);
-
-
-        if (companyDTO.getLogo() != null) {
-            MediaFileLogo logo = mapperUtil.map(companyDTO.getLogo(), MediaFileLogo.class);
-
-            logo.setContent(Base64.getDecoder().decode(companyDTO.getLogo().getContent()));
-            logo.setCompany(company);
-            company.setLogo(logo);
-        }
-
-        Company savedCompany = companyService.saveCompanyWithLogo(company);
+        Company obj = companyService.save(mapperUtil.map(companyDTO, Company.class));
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(savedCompany.getIdCompany()).toUri();
+                .path("/{id}").buildAndExpand(obj.getIdCompany()).toUri();
 
         return ResponseEntity.created(location).build();
     }

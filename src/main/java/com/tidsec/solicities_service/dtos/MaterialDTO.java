@@ -19,5 +19,5 @@ public class MaterialDTO {
     private MeasurementUnit measurementUnit;
     private Double cost;
     private Integer status = 1;
-    private List<MediaFileImageDTO> images;
+    private List<String> images;
 }

@@ -27,18 +27,18 @@ public class MaterialsRequestController {
     private final IMaterialsRequestService materialsRequestService;
     private final MapperUtil mapperUtil;
 
-    // 📌 1️⃣ Obtener todas las solicitudes de materiales con su detalle
+    // 📌 1️⃣ Obtener todas las solicitudes de materiales
     @GetMapping
-    public ResponseEntity<List<MaterialRequestListDetailDTO>> findAll() throws Exception {
-        List<MaterialRequestListDetailDTO> list = materialsRequestService.findAllWithDetails();
+    public ResponseEntity<List<MaterialsRequestDTO>> findAll() throws Exception {
+        List<MaterialsRequestDTO> list = mapperUtil.mapList(materialsRequestService.findAll(), MaterialsRequestDTO.class);
         return ResponseEntity.ok(list);
     }
 
     // 📌 2️⃣ Obtener una solicitud de materiales por ID
     @GetMapping("/{id}")
-    public ResponseEntity<MaterialRequestListDetailDTO> findById(@PathVariable("id") Long id) throws Exception {
-        MaterialRequestListDetailDTO dto = materialsRequestService.findByIdWithDetails(id);
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<MaterialsRequestDTO> findById(@PathVariable("id") Long id) throws Exception {
+        MaterialsRequestDTO obj = mapperUtil.map(materialsRequestService.findById(id), MaterialsRequestDTO.class);
+        return ResponseEntity.ok(obj);
     }
 
     // 📌 3️⃣ Crear una nueva solicitud de materiales

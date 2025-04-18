@@ -17,9 +17,9 @@ public class MediaFileImage {
     @EqualsAndHashCode.Include
     private Long idImage;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    /*@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_material", foreignKey = @ForeignKey(name = "FK_MATERIAL_IMAGE"))
-    private Material material;
+    private Material material;*/
 
     @Column(length = 50, nullable = false)
     private String fileName;

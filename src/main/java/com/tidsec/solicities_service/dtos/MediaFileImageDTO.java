@@ -12,7 +12,7 @@ import lombok.*;
 public class MediaFileImageDTO {
     @EqualsAndHashCode.Include
     private Long idImage;
-    private Material material;
+    //private Material material;
     private String fileName;
     private String fileType;
     private byte[] content;
