@@ -1,21 +1,30 @@
 package com.tidsec.solicities_service.controller;
 
+import com.cloudinary.utils.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
+import org.cloudinary.json.JSONObject;
+import com.cloudinary.*;
 import com.tidsec.solicities_service.dtos.MaterialDTO;
 import com.tidsec.solicities_service.entities.Material;
-import com.tidsec.solicities_service.entities.MediaFileImage;
+
 import com.tidsec.solicities_service.services.IMaterialService;
 import com.tidsec.solicities_service.util.MapperUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.net.URI;
-import java.util.Base64;
+
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
+
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -24,6 +33,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping("/materials")
 @RequiredArgsConstructor
 public class MaterialController {
+    private final Cloudinary cloudinary;
     private final IMaterialService materialService;
     private final MapperUtil mapperUtil;
 
@@ -67,6 +77,20 @@ public class MaterialController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<List<String>> upload(@RequestParam("file") MultipartFile multipartFile) throws Exception {
+
+        File f = convertToFile(multipartFile);
+        Map<String, Object> response =  cloudinary.uploader().upload(f, ObjectUtils.asMap("resource_type", "auto"));
+        JSONObject json = new JSONObject(response);
+        String url = json.getString("url");
+
+        System.out.println(url);
+
+        return ResponseEntity.ok(Collections.singletonList(url));
+
+    }
+
     // 📌 6️⃣ Obtener material con HATEOAS
     @GetMapping("/hateoas/{id}")
     public EntityModel<MaterialDTO> findByIdHateoas(@PathVariable("id") Long id) throws Exception {
@@ -79,5 +103,13 @@ public class MaterialController {
         resource.add(link1.withRel("material-self-info"));
         resource.add(link2.withRel("material-all-info"));
         return resource;
+    }
+
+    private File convertToFile(MultipartFile multipartFile) throws Exception{
+        File file = new File(multipartFile.getOriginalFilename());
+        FileOutputStream outputStream = new FileOutputStream(file);
+        outputStream.write(multipartFile.getBytes());
+        outputStream.close();
+        return file;
     }
 }
