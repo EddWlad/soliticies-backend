@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface IStockTakingMaterialRepository extends IGenericRepository<StockTakingMaterial, StockTakingMaterialPK> {
 
-    // 1️⃣ Verificar si el material ya existe en el inventario del proyecto
+    // 1️⃣ Verificar si el material ya existe en el inventario del proyect
     @Query("SELECT stm FROM StockTakingMaterial stm WHERE stm.stockTaking.idStockTaking = :idStockTaking AND stm.material.idMaterial = :idMaterial")
     StockTakingMaterial findByStockTakingAndMaterial(@Param("idStockTaking") Long idStockTaking, @Param("idMaterial") Long idMaterial);
 
